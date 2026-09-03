@@ -1,0 +1,31 @@
+{
+  "name": "m3-uml",
+  "description": "Skills de M3 Informatica para analisis funcional y modelado de casos de uso UML.",
+  "owner": {
+    "name": "M3 Informatica",
+    "url": "https://github.com/m3-dhl"
+  },
+  "plugins": [
+    {
+      "name": "casos-de-uso-uml",
+      "displayName": "Casos de Uso UML",
+      "source": "./plugins/casos-de-uso-uml",
+      "description": "Convierte un prompt con la descripcion de una funcionalidad en un modelo de casos de uso UML: esboza un modelo preliminar, entrevista solo sobre los huecos detectados y genera diagramas PlantUML, fichas de especificacion, revision de calidad y dossier entregable.",
+      "version": "0.3.0",
+      "author": {
+        "name": "M3 Informatica"
+      },
+      "repository": "https://github.com/m3-dhl/uml-skills",
+      "keywords": [
+        "uml",
+        "casos-de-uso",
+        "plantuml",
+        "analisis-funcional",
+        "documentacion",
+        "consultoria",
+        "qa"
+      ],
+      "category": "productivity"
+    }
+  ]
+}

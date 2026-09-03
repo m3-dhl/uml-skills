@@ -1,0 +1,18 @@
+{
+  "name": "casos-de-uso-uml",
+  "version": "0.3.0",
+  "description": "Convierte un prompt con la descripcion de una funcionalidad en un modelo de casos de uso UML: esboza un modelo preliminar, entrevista solo sobre los huecos detectados y genera diagramas PlantUML, fichas de especificacion, revision de calidad y dossier entregable.",
+  "author": {
+    "name": "M3 Informatica"
+  },
+  "keywords": [
+    "uml",
+    "casos-de-uso",
+    "plantuml",
+    "analisis-funcional",
+    "documentacion",
+    "consultoria",
+    "qa"
+  ],
+  "license": "UNLICENSED"
+}

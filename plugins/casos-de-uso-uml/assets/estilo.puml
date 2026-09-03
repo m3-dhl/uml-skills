@@ -1,0 +1,60 @@
+' ============================================================
+' Estilo comun para los diagramas de casos de uso.
+' Se incluye desde cada .puml con:   !include ../assets/estilo.puml
+' Ajusta los colores aqui una sola vez y cambian todos los diagramas.
+' ============================================================
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam roundcorner 8
+skinparam ArrowColor #37474F
+skinparam ArrowFontSize 11
+skinparam ArrowFontColor #546E7A
+
+skinparam actorStyle awesome
+skinparam actor {
+  BackgroundColor #ECEFF1
+  BorderColor #37474F
+  FontColor #263238
+}
+
+skinparam usecase {
+  BackgroundColor #E3F2FD
+  BorderColor #1565C0
+  FontColor #0D47A1
+  BorderThickness 1
+  StereotypeFontColor #1565C0
+}
+
+skinparam rectangle {
+  BackgroundColor #FAFAFA
+  BorderColor #90A4AE
+  FontColor #37474F
+  FontStyle bold
+}
+
+skinparam package {
+  BackgroundColor #FAFAFA
+  BorderColor #90A4AE
+}
+
+skinparam note {
+  BackgroundColor #FFF8E1
+  BorderColor #FFB300
+  FontSize 11
+}
+
+' Actores no humanos (sistemas externos): distinguelos con <<sistema>>
+skinparam actor<<sistema>> {
+  BackgroundColor #FFF3E0
+  BorderColor #EF6C00
+}
+
+' Casos de uso fuera del alcance de esta fase: <<fuera-alcance>>
+skinparam usecase<<fuera-alcance>> {
+  BackgroundColor #EEEEEE
+  BorderColor #BDBDBD
+  FontColor #757575
+}
