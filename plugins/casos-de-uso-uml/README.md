@@ -116,6 +116,25 @@ El script se autoconfigura:
 
 Requisito unico: **Java 8 o superior**. Los entornos de Claude ya lo traen.
 
+## Validacion del modelo
+
+`scripts/validar-modelo.sh` comprueba mecanicamente lo que `revisar-modelo-uc`
+audita con criterio: IDs `ACT-nn`/`UC-nn` duplicados (riesgo real cuando dev y
+consultoria trabajan en paralelo en ramas distintas), IDs de un diagrama sin
+dar de alta en los catalogos, e imagenes `.svg` desactualizadas respecto a su
+`.puml`. Termina en exit code 1 si hay errores.
+
+Lo ejecutan automaticamente `revisar-modelo-uc` (antes de la revision
+cualitativa) y `publicar-dossier-uc` (antes de montar el entregable). Tambien
+se puede lanzar a mano:
+
+```bash
+bash "${CLAUDE_PLUGIN_ROOT}/scripts/validar-modelo.sh" .
+```
+
+No hay hook de Git instalado por defecto: quien edite los `.puml` a mano fuera
+de Claude no pasa por esta validacion salvo que la ejecute el mismo.
+
 ### Instalacion sin salida a internet
 
 Descargar `plantuml.jar` de https://plantuml.com/download y:
@@ -144,6 +163,7 @@ casos-de-uso-uml/
 ├── agents/analista-casos-uso.md
 ├── assets/estilo.puml
 ├── scripts/render-uml.sh
+├── scripts/validar-modelo.sh
 └── skills/
     ├── uml/                      (menu de entrada)
     ├── analizar-funcionalidad/   (+ references/tecnica-entrevista.md)

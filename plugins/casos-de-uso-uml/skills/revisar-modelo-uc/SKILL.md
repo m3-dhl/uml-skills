@@ -16,7 +16,25 @@ metadata:
 Auditar un modelo antes de que llegue a desarrollo, a QA o al cliente. Es el paso
 que evita que un error de modelado se propague a estimaciones y a pruebas.
 
-## Como ejecutar la revision
+## Paso 0: validacion automatica (obligatorio, antes de leer nada)
+
+Ejecutar primero:
+
+```bash
+bash "${CLAUDE_PLUGIN_ROOT}/scripts/validar-modelo.sh" <directorio-del-proyecto>
+```
+
+Comprueba mecanicamente lo que un LLM puede pasar por alto al leer deprisa: IDs
+`ACT-nn`/`UC-nn` duplicados (tipico cuando dos personas trabajan en paralelo en
+ramas distintas), IDs usados en el diagrama sin dar de alta en los catalogos, y
+`.svg` desactualizados respecto a su `.puml`.
+
+Si termina con exit code 1, **no continuar con las seis dimensiones**: resolver
+primero los errores que reporta (son objetivos, no de criterio) y volver a
+ejecutarlo. Los avisos (exit 0) se pueden arrastrar a la revision cualitativa
+como hallazgos menores.
+
+## Como ejecutar la revision cualitativa
 
 Para modelos de mas de ~10 casos de uso o cuando el usuario pide una revision
 formal, delegar el analisis en el agente `analista-casos-uso` mediante la

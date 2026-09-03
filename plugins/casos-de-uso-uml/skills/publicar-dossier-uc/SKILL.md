@@ -18,8 +18,18 @@ cliente, subir a la wiki o adjuntar a una oferta.
 
 ## Antes de empaquetar
 
-Ejecutar `revisar-modelo-uc` y resolver al menos los hallazgos criticos. Un
-dossier con el `<<include>>` invertido documenta el error con mejor tipografia.
+Ejecutar primero la validacion mecanica:
+
+```bash
+bash "${CLAUDE_PLUGIN_ROOT}/scripts/validar-modelo.sh" <directorio-del-proyecto>
+```
+
+Si devuelve exit code 1 (IDs duplicados, referencias sin definir o imagenes
+desactualizadas), **no montar el dossier**: corregirlo y volver a ejecutar.
+
+Despues, ejecutar `revisar-modelo-uc` y resolver al menos los hallazgos
+criticos de la revision cualitativa. Un dossier con el `<<include>>` invertido
+documenta el error con mejor tipografia.
 
 Confirmar con el usuario, en una sola tanda de `AskUserQuestion`:
 
