@@ -9,7 +9,11 @@ skinparam shadowing false
 skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 13
 skinparam roundcorner 8
+skinparam linetype ortho
+skinparam nodesep 40
+skinparam ranksep 60
 skinparam ArrowColor #37474F
+skinparam ArrowThickness 1.2
 skinparam ArrowFontSize 11
 skinparam ArrowFontColor #546E7A
 
