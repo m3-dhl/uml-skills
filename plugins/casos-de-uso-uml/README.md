@@ -1,120 +1,89 @@
 # Casos de Uso UML
 
-Pack de skills para convertir descripciones de funcionalidad en modelos de casos
-de uso UML completos: diagramas, fichas de especificacion, revision de calidad y
-dossier entregable. Pensado para que **consultoria, desarrollo y calidad trabajen
-sobre el mismo modelo** sin que ninguno tenga que escribir PlantUML a mano.
+Pack de skills para convertir descripciones de funcionalidad en modelos de
+casos de uso UML completos — diagramas, fichas, revision de calidad y dossier
+entregable — sin que nadie tenga que escribir PlantUML a mano. Pensado para
+que **consultoria, desarrollo y calidad trabajen sobre el mismo modelo**.
 
-## Que resuelve
-
-Le pasas un prompt con la descripcion de la funcionalidad. El pack **esboza
-primero un modelo preliminar**, mide cuanto de el es dato tuyo y cuanto es
-suposicion suya, y **entrevista solo sobre los huecos** que ha detectado, con la
-prediccion adjunta en cada pregunta. Cuando el encuadre esta confirmado, encadena
-solo: diagrama, fichas y auditoria.
-
-## Uso normal
-
-Si no sabes por donde empezar, el menu pregunta y deriva solo:
+## Empieza aqui
 
 ```
-/casos-de-uso-uml:uml
+/uml
 ```
 
-Y si ya sabes lo que quieres, directo:
+Es lo unico que hay que recordar. El agente pregunta que quieres hacer y
+deriva al skill adecuado — analizar una funcionalidad nueva, generar solo el
+diagrama, redactar fichas, auditar un modelo o montar el entregable. Si ya lo
+dices en el propio mensaje ("dibuja los casos de uso de este texto"), deriva
+directo, sin menu:
 
 ```
-/casos-de-uso-uml:analizar-funcionalidad Estamos haciendo un portal donde los
-clientes suben facturas, un gestor las valida y se envian al ERP. Hay que
-documentar los casos de uso para consultoria y para QA.
+/uml Estamos haciendo un portal donde los clientes suben facturas, un
+gestor las valida y se envian al ERP. Documentalo para consultoria y QA.
 ```
 
-A partir de ahi solo hay que ir corrigiendo suposiciones. Los adjuntos (documento
-funcional, historias de usuario, correos) cuentan como parte del prompt base.
+A partir de ahi solo hay que ir corrigiendo suposiciones. Documentos
+funcionales, historias de usuario o correos adjuntos cuentan como parte del
+prompt.
 
-## Skills
+## Que hace por debajo
 
-| Skill | Que hace | Salida |
-| --- | --- | --- |
-| `uml` | **Menu.** Pregunta que quieres hacer y deriva al skill adecuado | — |
-| `analizar-funcionalidad` | **Punto de entrada.** Borrador → cobertura → entrevista sobre huecos → encadena el resto | Modelo completo auditado |
-| `descubrir-casos-uso` | Entrevista por tandas para identificar frontera, actores y objetivos | `catalogo-actores.md`, `catalogo-casos-uso.md` |
-| `diagramar-casos-uso` | Genera el diagrama y lo renderiza en local | `.puml` + `.svg` + `.png` |
-| `especificar-casos-uso` | Redacta las fichas formato Cockburn | `UC-nn-*.md`, `matriz-trazabilidad.md` |
-| `revisar-modelo-uc` | Audita el modelo contra 20 antipatrones | Informe priorizado |
-| `publicar-dossier-uc` | Monta el entregable final | `.docx` / `.pdf` / Markdown / HTML |
+1. **Esboza un modelo preliminar** a partir de lo que ya sabe, marcando cada
+   elemento como dato del texto, inferido o supuesto.
+2. **Entrevista solo sobre los huecos** que detecta, con la prediccion
+   adjunta en cada pregunta — corregir cuesta menos que responder en blanco.
+3. **Encadena diagrama → fichas → auditoria** una vez el encuadre esta
+   confirmado.
 
-Los skills se invocan solos cuando el contexto encaja, o a mano con
-`/casos-de-uso-uml:<nombre>`.
+## Skills del pack
 
-## Agente
+| Skill | Que hace |
+| --- | --- |
+| `uml` | Menu de entrada. Punto de partida recomendado. |
+| `analizar-funcionalidad` | De una descripcion en prosa al modelo completo auditado. |
+| `descubrir-casos-uso` | Entrevista para identificar frontera, actores y objetivos. |
+| `diagramar-casos-uso` | Genera el `.puml` y lo renderiza a SVG/PNG en local. |
+| `especificar-casos-uso` | Redacta las fichas en formato Cockburn. |
+| `revisar-modelo-uc` | Audita el modelo contra 20 antipatrones conocidos. |
+| `publicar-dossier-uc` | Monta el entregable final (Word, PDF, Markdown, HTML). |
 
-`analista-casos-uso` audita el modelo con criterio independiente. Lo usa
-`revisar-modelo-uc` para modelos de mas de 10 casos de uso.
-
-## Flujo
-
-```
-Prompt base + adjuntos
-        v
-/casos-de-uso-uml:analizar-funcionalidad
-        |
-        |-- Fase 1  Borrador v0, con cada elemento marcado
-        |            (dato del texto / [INFERIDO] / [SUPUESTO])
-        |-- Fase 2  Cobertura y confianza. ¿Va bien encaminado?
-        |-- Fase 3  Entrevista SOLO sobre los huecos,
-        |            con la prediccion adjunta en cada pregunta
-        |-- Fase 4  Parada: "¿puedo predecir tus 3 siguientes respuestas?"
-        |            + devolucion del encuadre, incluido el fuera de alcance
-        |-- Fase 5  Encadena diagrama -> fichas -> revision
-        v
-Modelo auditado + cuestiones abiertas
-        v
-/casos-de-uso-uml:publicar-dossier-uc   (solo si se pide)
-```
-
-Los demas skills siguen siendo invocables por separado, para entrar por el medio:
-si ya hay catalogos, se entra por `diagramar-casos-uso`; si llega documentacion de
-un tercero y solo se quiere la auditoria, por `revisar-modelo-uc`.
-
-### Por que borrador primero y preguntas despues
-
-Corregir una suposicion cuesta al interlocutor mucho menos esfuerzo que responder
-desde una pagina en blanco, y destapa desacuerdos que una pregunta abierta no
-destapa: nadie corrige lo que no ve. Por eso cada pregunta se formula como
-hipotesis ("asumo que la devolucion la autoriza el Gestor, ¿o hay un rol de
-Atencion al Cliente?") y no como pregunta abierta.
-
-La cadencia es hibrida: en tanda de 2-3 lo enumerable e independiente (actores,
-alcance, prioridades) y de una en una lo que condiciona la siguiente pregunta.
+Todos son invocables por separado con `/casos-de-uso-uml:<nombre>` si ya sabes
+por donde entrar (por ejemplo, hay catalogos y solo falta el diagrama). El
+agente `analista-casos-uso` audita con criterio independiente cuando el
+modelo supera los 10 casos de uso.
 
 ## Por que PlantUML y no Mermaid
 
-Mermaid no soporta diagramas de casos de uso UML: no esta entre sus tipos de
-diagrama. PlantUML si, de forma nativa, con actores, frontera del sistema,
-`<<include>>`, `<<extend>>` y generalizacion. Ademas el `.puml` es texto plano,
-asi que se versiona en Git y se revisa en un pull request como cualquier otro
-fuente, en lugar de ser un binario opaco de una herramienta de modelado.
+Mermaid no soporta diagramas de casos de uso UML. PlantUML si, de forma
+nativa: actores, frontera del sistema, `<<include>>`, `<<extend>>` y
+generalizacion. El `.puml` es texto plano — se versiona en Git y se revisa en
+un pull request como cualquier otro fuente, sin depender de un binario opaco
+de una herramienta de modelado.
 
-## Renderizado
+## Renderizado, en local
 
-`scripts/render-uml.sh` renderiza **en local**, sin enviar el modelo a ningun
-servicio externo. Importa cuando el diagrama describe el sistema de un cliente.
+`scripts/render-uml.sh` renderiza sin enviar el modelo a ningun servicio
+externo — importa cuando el diagrama describe el sistema de un cliente.
 
 ```bash
 bash "${CLAUDE_PLUGIN_ROOT}/scripts/render-uml.sh" diagramas/DCU-01.puml -f both
-bash "${CLAUDE_PLUGIN_ROOT}/scripts/render-uml.sh" diagramas/ -f svg -o entregables/img
 ```
 
-El script se autoconfigura:
+Se autoconfigura solo: busca `plantuml.jar` (variable `PLANTUML_JAR`,
+`~/.cache/plantuml/`, `vendor/` del plugin, o `plantuml` del sistema), lo
+descarga y cachea si no lo encuentra, y cae al motor interno Smetana si no
+hay Graphviz instalado. Unico requisito: Java 8+.
 
-1. Busca `plantuml.jar` en `PLANTUML_JAR`, en `~/.cache/plantuml/`, en
-   `vendor/` del plugin, o como `plantuml` del sistema.
-2. Si no lo encuentra, lo descarga una sola vez (GitHub releases, Maven Central,
-   o el registro npm como ultimo recurso) y lo cachea.
-3. Si no hay Graphviz instalado, usa el motor interno Smetana de PlantUML.
+<details>
+<summary>Instalacion sin salida a internet</summary>
 
-Requisito unico: **Java 8 o superior**. Los entornos de Claude ya lo traen.
+Descargar `plantuml.jar` de https://plantuml.com/download y:
+
+- colocarlo en `~/.cache/plantuml/plantuml.jar`, o
+- exportar `PLANTUML_JAR=/ruta/al/plantuml.jar`, o
+- crear `vendor/` en la raiz del plugin y dejarlo ahi antes de empaquetar.
+
+</details>
 
 ## Validacion del modelo
 
@@ -122,11 +91,8 @@ Requisito unico: **Java 8 o superior**. Los entornos de Claude ya lo traen.
 audita con criterio: IDs `ACT-nn`/`UC-nn` duplicados (riesgo real cuando dev y
 consultoria trabajan en paralelo en ramas distintas), IDs de un diagrama sin
 dar de alta en los catalogos, e imagenes `.svg` desactualizadas respecto a su
-`.puml`. Termina en exit code 1 si hay errores.
-
-Lo ejecutan automaticamente `revisar-modelo-uc` (antes de la revision
-cualitativa) y `publicar-dossier-uc` (antes de montar el entregable). Tambien
-se puede lanzar a mano:
+`.puml`. `revisar-modelo-uc` y `publicar-dossier-uc` lo ejecutan solos como
+primer paso; tambien se puede lanzar a mano:
 
 ```bash
 bash "${CLAUDE_PLUGIN_ROOT}/scripts/validar-modelo.sh" .
@@ -135,25 +101,14 @@ bash "${CLAUDE_PLUGIN_ROOT}/scripts/validar-modelo.sh" .
 No hay hook de Git instalado por defecto: quien edite los `.puml` a mano fuera
 de Claude no pasa por esta validacion salvo que la ejecute el mismo.
 
-### Instalacion sin salida a internet
-
-Descargar `plantuml.jar` de https://plantuml.com/download y:
-
-- colocarlo en `~/.cache/plantuml/plantuml.jar`, o
-- exportar `PLANTUML_JAR=/ruta/al/plantuml.jar`, o
-- crear `vendor/` en la raiz del plugin y dejarlo ahi antes de empaquetar.
-
 ## Personalizacion
 
-**Estilo visual**: editar `assets/estilo.puml` (colores, tipografia, estereotipos).
-Cambia todos los diagramas a la vez.
-
-**Convenciones**: los skills usan `ACT-nn`, `UC-nn` y `RN-nn`. Para adaptarlos a
-la nomenclatura del cliente, editar los SKILL.md correspondientes.
-
-**Plantilla de ficha**: `skills/especificar-casos-uso/references/plantilla-ficha.md`.
-
-**Version de PlantUML**: variable `PLANTUML_VERSION` del script.
+| Que cambiar | Donde |
+| --- | --- |
+| Estilo visual (colores, tipografia) | `assets/estilo.puml` — afecta a todos los diagramas |
+| Convenciones de ID (`ACT-nn`, `UC-nn`, `RN-nn`) | los `SKILL.md` correspondientes |
+| Plantilla de ficha | `skills/especificar-casos-uso/references/plantilla-ficha.md` |
+| Version de PlantUML | variable `PLANTUML_VERSION` en `render-uml.sh` |
 
 ## Estructura
 
@@ -176,15 +131,13 @@ casos-de-uso-uml/
 
 ## Base metodologica
 
-- **UML 2.5** para la semantica de actores, frontera, `<<include>>`, `<<extend>>`
-  y generalizacion.
+- **UML 2.5** para la semantica de actores, frontera, `<<include>>`,
+  `<<extend>>` y generalizacion.
 - **Alistair Cockburn**, *Writing Effective Use Cases*, para los niveles de
-  objetivo (resumen / objetivo de usuario / subfuncion) y la plantilla "fully
-  dressed" de las fichas.
+  objetivo y la plantilla "fully dressed" de las fichas.
 - **PlantUML** como notacion textual.
 - Tecnica de entrevista inspirada en el patron *interview-me* de Addy Osmani:
-  hipotesis con confianza declarada, prediccion adjunta a cada pregunta, y
-  criterio de parada verificable ("¿puedo predecir las tres siguientes
-  respuestas?") en lugar de una sensacion de haber preguntado bastante.
+  hipotesis con confianza declarada, prediccion adjunta a cada pregunta y
+  criterio de parada verificable.
 
 Version 0.3.0
